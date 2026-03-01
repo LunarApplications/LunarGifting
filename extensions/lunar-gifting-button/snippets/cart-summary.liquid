@@ -1,0 +1,18 @@
+{% assign details = cart.attributes._digiGifts.recipient %}
+<style>
+  .summaryLabel {
+    font-weight: 700;
+  }
+</style>
+{% if cart.attributes._digiGifts %}
+  <div id="cartsummary">
+    <h2>Gift Recipient</h2>
+
+    <span class="summaryLabel">Name:</span><span> {{ details.name }}</span>
+    <br>
+    <span class="summaryLabel">Email:</span><span> {{ details.emailAddress }}</span>
+    <br>
+    <span class="summaryLabel">Message:</span>
+    <p>{{ details.message }}</p>
+  </div>
+{% endif %}

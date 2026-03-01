@@ -1,0 +1,59 @@
+<style>
+  .quantity-input-container {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+  }
+
+  .quantity-input {
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .quantity-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #ddd;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .quantity-button:hover {
+    background-color: #bbb;
+  }
+
+  .quantity-button:active {
+    background-color: #aaa;
+  }
+</style>
+
+<div class="quantity-input-container">
+  <button class="quantity-button" onclick="decreaseQuantity()">-</button>
+  <input type="number" id="quantity" name="quantity" class="quantity-input" value="1" min="1">
+  <button class="quantity-button" onclick="increaseQuantity()">+</button>
+</div>
+
+<script>
+  const quantityInput = document.getElementById('quantity');
+
+  function increaseQuantity() {
+    let currentValue = parseInt(quantityInput.value, 10);
+    quantityInput.value = currentValue + 1;
+  }
+
+  function decreaseQuantity() {
+    let currentValue = parseInt(quantityInput.value, 10);
+    if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+    }
+  }
+</script>

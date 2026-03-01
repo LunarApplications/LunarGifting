@@ -1,0 +1,181 @@
+{% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
+<style>
+  .__giftsButtonContainer {
+    display: flex;
+    justify-content: space-evenly;
+    color: black;
+    gap: 10px;
+  }
+
+  .__giftButton {
+    height: 100%;
+    color: white;
+    background-color: black;
+  }
+  ._digiGiftsModal {
+    padding: 10px;
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    border: 1px solid grey;
+    top: 0;
+    background-color: #fff;
+  }
+
+  ._digiGiftsModal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .show {
+    display: block;
+    z-index: 999;
+  }
+
+  ._digiGiftsForm {
+    display: flex;
+    flex-direction: column;
+  }
+
+  ._digiGiftsFormLabel {
+    font-size: 1.5rem;
+  }
+
+  .__digiGiftsInput:focus,
+  .__digiGiftsInput:invalid {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .__digiGiftsSubmitButton {
+    {% comment %}
+    background: none;
+    outline: none;
+    border: 1px solid grey; {% endcomment %}
+    margin-top: 10px;
+    height: 100%;
+    color: white;
+    background-color: black;
+    padding:10px;
+    border: none;
+  }
+
+  .__digiGiftsSubmitButton:hover{
+    cursor: pointer;
+  }
+
+
+  .__digiGiftsCloseButton:hover{
+    cursor: 'pointer';
+    color:'pink';
+  }
+
+  .__errorMessage{
+    font-size: 0.98rem;
+    color: red;
+  }
+</style>
+
+{% if block.settings.display == 'order_buttons' %}
+  {% assign addAsGiftText = 'Add to Gift' %}
+  {% assign buyAsGiftText = 'Buy as Gift' %}
+
+  <div id="_digiGifts_modal" class="_digiGiftsModal">
+    <div class="_digiGiftsModal_header">
+      <h3>Gift Details</h3>
+      <span id="__giftsAddAsGift__ModalClose" class="__digiGiftsCloseButton">X</span>
+    </div>
+
+    <p>
+      These details will be used for all gifts added to the current order, these can be changed on the checkout page.
+    </p>
+
+    <form
+      id="digi-gift-form"
+      class="_digiGiftsForm"
+      data-product-id="{{ product.id }}"
+      data-product-description="{{ product.description }}"
+      data-product-price="{{ product.price }}"
+      data-variant-id="{{ product.variants.first.id }}"
+    >
+      <label for="recipient-name" class="_digiGiftsFormLabel">Recipient Name<span style="color: red">*</span></label>
+      <input type="text" id="digigifts-recipient-name" name="recipient_name" class="__digiGiftsInput" required>
+      <span id="name-error" class="__errorMessage"></span>
+
+      <label for="recipient-email" class="_digiGiftsFormLabel">Recipient Email<span style="color: red">*</span></label>
+      <input type="email" id="digigifts-recipient-email" name="recipient_email" class="__digiGiftsInput" required>
+      <span id="recipient-email-error" class="__errorMessage"></span>
+
+      <label for="message" class="_digiGiftsFormLabel">Gift Message<span style="color: red">*</span></label>
+      <textarea id="digigifts-message" name="message" rows="4" class="__digiGiftsInput" required></textarea>
+      <span id="message-error" class="__errorMessage"></span>
+
+      <button type="button" id="submit-digigifts-form" class="__digiGiftsSubmitButton">Submit</button>
+    </form>
+  </div>
+
+  <div class="__giftsButtonContainer">
+    <button
+      id="__giftsAddToCart__Button"
+      class="shopify-payment-button__button __giftButton"
+      data-product-id="{{ product.id }}"
+      data-product-description="{{ product.description }}"
+      data-product-price="{{ product.price }}"
+      data-variant-id="{{ product.variants.first.id }}"
+    >
+      Add to Cart
+    </button>
+
+    <button
+      id="__giftsAddAsGift__Button"
+      data-product-id="{{ product.id }}"
+      data-product-description="{{ product.description }}"
+      data-product-price="{{ product.price }}"
+      data-variant-id="{{ product.variants.first.id }}"
+      class="shopify-payment-button__button __giftButton"
+    >
+      {% if cart.attributes._digiGifts %}
+        {{ addAsGiftText }}
+      {% else %}
+        {{ buyAsGiftText }}
+      {% endif %}
+    </button>
+  </div>
+
+  <script async src="{{ 'checkForExistingGifts.js' | asset_url }}"></script>
+  <script async src="{{ 'clearCartAttributes.js' | asset_url }}"></script>
+  <script async src="{{ 'addToCartListener.js' | asset_url }}"></script>
+  <script async src="{{ 'addAsGiftListener.js' | asset_url }}"></script>
+  <script async src="{{ 'addGiftFromModal.js' | asset_url }}"></script>
+
+  <script async src="{{ 'modal.js' | asset_url }}"></script>
+  <script async src="{{ 'resetFormErrors.js' | asset_url }}"></script>
+  <script async src="{{ 'formValidation.js' | asset_url }}"></script>
+
+{% else %}
+  {% render 'cart-summary' %}
+{% endif -%}
+{% schema %}
+{
+  "name": "Lunar Gifting Button",
+  "target": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "product", "autofill": true },
+    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" },
+
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Display as:",
+      "default": "order_buttons",
+      "options": [
+        { "value": "order_buttons", "label": "Order Buttons" },
+        { "value": "cart_summary", "label": "Cart Summary" }
+      ]
+    }
+  ]
+}
+{% endschema %}

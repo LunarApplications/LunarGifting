@@ -11,7 +11,7 @@ export default function AdditionalPage() {
           >
             App Bridge
           </s-link>
-          .
+          . .
         </s-paragraph>
         <s-paragraph>
           To create your own page and have it show up in the app navigation, add
