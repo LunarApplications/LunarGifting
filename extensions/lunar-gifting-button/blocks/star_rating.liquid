@@ -119,7 +119,7 @@
 
   <div class="__giftsButtonContainer">
     <button
-      id="__giftsAddToCart__Button"
+      id="lunarGifts_AddToCart__Button"
       class="shopify-payment-button__button __giftButton"
       data-product-id="{{ product.id }}"
       data-product-description="{{ product.description }}"
@@ -144,16 +144,18 @@
       {% endif %}
     </button>
   </div>
+  <script async src="{{ 'addToCart.js' | asset_url }}"></script>
+  {% comment %}
+    <script async src="{{ 'checkForExistingGifts.js' | asset_url }}"></script>
+    <script async src="{{ 'clearCartAttributes.js' | asset_url }}"></script>
+    <script async src="{{ 'addToCartListener.js' | asset_url }}"></script>
+    <script async src="{{ 'addAsGiftListener.js' | asset_url }}"></script>
+    <script async src="{{ 'addGiftFromModal.js' | asset_url }}"></script>
 
-  <script async src="{{ 'checkForExistingGifts.js' | asset_url }}"></script>
-  <script async src="{{ 'clearCartAttributes.js' | asset_url }}"></script>
-  <script async src="{{ 'addToCartListener.js' | asset_url }}"></script>
-  <script async src="{{ 'addAsGiftListener.js' | asset_url }}"></script>
-  <script async src="{{ 'addGiftFromModal.js' | asset_url }}"></script>
-
-  <script async src="{{ 'modal.js' | asset_url }}"></script>
-  <script async src="{{ 'resetFormErrors.js' | asset_url }}"></script>
-  <script async src="{{ 'formValidation.js' | asset_url }}"></script>
+    <script async src="{{ 'modal.js' | asset_url }}"></script>
+    <script async src="{{ 'resetFormErrors.js' | asset_url }}"></script>
+    <script async src="{{ 'formValidation.js' | asset_url }}"></script>
+  {% endcomment %}
 
 {% else %}
   {% render 'cart-summary' %}
