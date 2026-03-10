@@ -1,21 +1,38 @@
-const addToCartButton = document.getElementById("lunarGifts_AddToCart__Button");
+const addToCartButton = document.getElementById("__giftsAddAsGift__Button");
 
 addToCartButton.addEventListener("click", async () => {
+  const lineItemProperties = {
+    "Gift Recipient": "Alice",
+    "Gift Message": "Happy Birthday!",
+    "Wrap Type": "Gold Foil",
+  };
   const formData = {
     items: [
       {
         id: addToCartButton.dataset.variantId,
         quantity: 1,
+        // lineItemProperties,
       },
     ],
   };
 
+  // Add line item props
   await fetch(window.Shopify.routes.root + "cart/add.js", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
+  });
+  // Add cart props
+  await fetch("/cart/update.js", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      attributes: lineItemProperties,
+    }),
   });
 
   const response = await fetch(
