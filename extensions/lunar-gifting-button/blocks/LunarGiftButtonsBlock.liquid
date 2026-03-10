@@ -1,4 +1,3 @@
-{% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
 <style>
   .__giftsButtonContainer {
     display: flex;
@@ -78,9 +77,9 @@
     color: red;
   }
 </style>
-
+{% render 'modal' %}
 {% if block.settings.display == 'order_buttons' %}
-  {% assign addAsGiftText = 'Add to Gift+' %}
+  {% assign addAsGiftText = 'Add to Gift++' %}
   {% assign buyAsGiftText = 'Buy as Gift-' %}
 
   <div id="_digiGifts_modal" class="_digiGiftsModal">
@@ -160,6 +159,7 @@
 {% else %}
   {% render 'cart-summary' %}
 {% endif -%}
+
 {% schema %}
 {
   "name": "Lunar Gifting Button",
