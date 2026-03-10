@@ -4,7 +4,7 @@
 
     <h3>Send as a Gift</h3>
 
-    <form id="gift-form">
+    <form id="gift-form" onsubmit="">
       <label>
         Recipient Name
         <input type="text" name="gift_recipient" required>
@@ -20,7 +20,7 @@
         <textarea name="gift_message"></textarea>
       </label>
 
-      <button type="submit">Save Gift Details</button>
+      <button id="lunar-save-gift-details">Save Gift Details</button>
     </form>
   </div>
 </div>
@@ -32,7 +32,7 @@
   }
 
   .gift-modal {
-    display: block;
+    display: none;
     position: fixed;
     z-index: 9999;
     left: 0;

@@ -129,7 +129,7 @@
     </button>
 
     <button
-      id="__giftsAddAsGift__Button"
+      id="lunar-add-gift-button"
       data-product-id="{{ product.id }}"
       data-product-description="{{ product.description }}"
       data-product-price="{{ product.price }}"
@@ -143,7 +143,16 @@
       {% endif %}
     </button>
   </div>
-  <script async src="{{ 'addToCart.js' | asset_url }}"></script>
+
+  <script>
+    const lGiftModal = document.getElementById('lunar-gift-modal');
+
+    const addAsGiftButton = document.getElementById('lunar-add-gift-button');
+    addAsGiftButton.addEventListener('click', function () {
+      lGiftModal.style.display = 'block';
+    });
+  </script>
+  {% comment %} <script async src="{{ 'addToCart.js' | asset_url }}"></script> {% endcomment %}
   {% comment %}
     <script async src="{{ 'checkForExistingGifts.js' | asset_url }}"></script>
     <script async src="{{ 'clearCartAttributes.js' | asset_url }}"></script>
