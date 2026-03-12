@@ -8,10 +8,11 @@ export default async () => {
 };
 
 function Extension() {
-const [giftRecipient, giftMessage] =
+const [giftRecipient, giftMessage, giftEmail] =
     useAttributeValues([
-      'Gift Recipient',
-      'Gift Message'
+      'gift_recipient',
+      'gift_message',
+      'gift_email'
     ]);
 
 
@@ -46,6 +47,7 @@ console.log('shopify',shopify)
         </s-text>
           <s-text-field value={giftRecipient} />
           <s-text-area value={giftMessage}/>
+          <s-text-area value={giftEmail}/>
      
       </s-stack>
     </s-stack>

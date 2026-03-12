@@ -90,10 +90,10 @@
     closeModal();
   });
 
-  document.getElementById('lunar-save-gift-details').addEventListener('click', function (e) {
+  document.getElementById('lunar-save-gift-details').addEventListener('click', async function (e) {
     console.log('e', e);
     e.preventDefault();
-    saveGiftDetailsAndAddToCart(e.target.form, this.dataset.variantId);
+    await saveGiftDetailsAndAddToCart(e.target.form, this.dataset.variantId);
     closeModal();
   });
 </script>
