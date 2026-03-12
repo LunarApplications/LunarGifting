@@ -1,42 +1,53 @@
 /**
  * This file handles adding the item to the cart and then updating the cart attributes.
- */
-const addToCart = async () => {
-  const addToCartButton = document.getElementById("lunar-save-gift-details");
-  const lineItemProperties = {
-    "Gift Recipient": "Alice",
-    "Gift Message": "Happy Birthday!",
-    "Wrap Type": "Gold Foil",
-  };
+//  */
+// import addItemToCart from "./addItemToCart";
+// import updateCartAttributes from "./updateCartAttributes";
+
+saveGiftDetailsAndAddToCart = async (form, variantId) => {
+  const giftFormData = new FormData(form);
+
+  const lineItemProperties = {};
+
+  for (const [key, value] of giftFormData.entries()) {
+    lineItemProperties[key] = value;
+  }
+  console.log("variantId", variantId);
+
+  console.log("lineItemProperties", lineItemProperties);
 
   const formData = {
     items: [
       {
-        id: addToCartButton.dataset.variantId,
+        id: variantId,
         quantity: 1,
         // lineItemProperties,
       },
     ],
   };
   //   Add line item props
-  await fetch(window.Shopify.routes.root + "cart/add.js", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
+  // await fetch(window.Shopify.routes.root + "cart/add.js", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(formData),
+  // });
+
+  window.addItemToCart(formData).then(() => {
+    updateCartAttributes(lineItemProperties);
   });
 
   // Add cart props
-  await fetch("/cart/update.js", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      attributes: lineItemProperties,
-    }),
-  });
+  // await fetch("/cart/update.js", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     attributes: lineItemProperties,
+  //   }),
+  // });
 
   const response = await fetch(
     `${window.Shopify.routes.root}?sections=cart-drawer,cart-icon-bubble`,
@@ -54,10 +65,4 @@ const addToCart = async () => {
       container.innerHTML = sections[section];
     }
   }
-
-  const _GiftModal = document.getElementById("lunar-gift-modal");
-
-  _GiftModal.addEventListener("click", function () {
-    _GiftModal.style.display = "block";
-  });
 };

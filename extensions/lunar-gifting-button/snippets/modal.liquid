@@ -4,7 +4,7 @@
 
     <h3>Send as a Gift</h3>
 
-    <form id="gift-form" onsubmit="">
+    <form id="gift-form" submit="">
       <label>
         Recipient Name
         <input type="text" name="gift_recipient" required>
@@ -20,7 +20,15 @@
         <textarea name="gift_message"></textarea>
       </label>
 
-      <button id="lunar-save-gift-details">Save Gift Details</button>
+      <button
+        id="lunar-save-gift-details"
+        data-product-id="{{ product.id }}"
+        data-product-description="{{ product.description }}"
+        data-product-price="{{ product.price }}"
+        data-variant-id="{{ product.variants.first.id }}"
+      >
+        Save Gift Details
+      </button>
     </form>
   </div>
 </div>
@@ -68,11 +76,24 @@
   }
 </style>
 
-<script>
-  const modalClose = document.getElementById('lunar-modal-close');
-  const lunarGiftModal = document.getElementById('lunar-gift-modal');
+<script async src="{{ 'saveGiftDetails.js' | asset_url }}"></script>
 
-  modalClose.addEventListener('click', function (event) {
+<script>
+  const lunarGiftModal = document.getElementById('lunar-gift-modal');
+  function closeModal() {
     lunarGiftModal.style.display = 'none';
+  }
+
+  const modalClose = document.getElementById('lunar-modal-close');
+  modalClose.addEventListener('click', function (event) {
+    event.preventDefault();
+    closeModal();
+  });
+
+  document.getElementById('lunar-save-gift-details').addEventListener('click', function (e) {
+    console.log('e', e);
+    e.preventDefault();
+    saveGiftDetailsAndAddToCart(e.target.form, this.dataset.variantId);
+    closeModal();
   });
 </script>

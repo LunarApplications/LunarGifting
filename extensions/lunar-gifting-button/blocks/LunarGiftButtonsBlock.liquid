@@ -77,44 +77,47 @@
     color: red;
   }
 </style>
+
 {% render 'modal' %}
 {% if block.settings.display == 'order_buttons' %}
   {% assign addAsGiftText = 'Add to Gift++' %}
   {% assign buyAsGiftText = 'Buy as Gift-' %}
 
-  <div id="_digiGifts_modal" class="_digiGiftsModal">
-    <div class="_digiGiftsModal_header">
-      <h3>Gift Details</h3>
-      <span id="__giftsAddAsGift__ModalClose" class="__digiGiftsCloseButton">X</span>
+  {% comment %}
+    <div id="_digiGifts_modal" class="_digiGiftsModal">
+      <div class="_digiGiftsModal_header">
+        <h3>Gift Details</h3>
+        <span id="__giftsAddAsGift__ModalClose" class="__digiGiftsCloseButton">X</span>
+      </div>
+
+      <p>
+        These details will be used for all gifts added to the current order, these can be changed on the checkout page.
+      </p>
+
+      <form
+        id="digi-gift-form"
+        class="_digiGiftsForm"
+        data-product-id="{{ product.id }}"
+        data-product-description="{{ product.description }}"
+        data-product-price="{{ product.price }}"
+        data-variant-id="{{ product.variants.first.id }}"
+      >
+        <label for="recipient-name" class="_digiGiftsFormLabel">Recipient Name<span style="color: red">*</span></label>
+        <input type="text" id="digigifts-recipient-name" name="recipient_name" class="__digiGiftsInput" required>
+        <span id="name-error" class="__errorMessage"></span>
+
+        <label for="recipient-email" class="_digiGiftsFormLabel">Recipient Email<span style="color: red">*</span></label>
+        <input type="email" id="digigifts-recipient-email" name="recipient_email" class="__digiGiftsInput" required>
+        <span id="recipient-email-error" class="__errorMessage"></span>
+
+        <label for="message" class="_digiGiftsFormLabel">Gift Message<span style="color: red">*</span></label>
+        <textarea id="digigifts-message" name="message" rows="4" class="__digiGiftsInput" required></textarea>
+        <span id="message-error" class="__errorMessage"></span>
+
+        <button type="button" id="submit-digigifts-form" class="__digiGiftsSubmitButton">Submit</button>
+      </form>
     </div>
-
-    <p>
-      These details will be used for all gifts added to the current order, these can be changed on the checkout page.
-    </p>
-
-    <form
-      id="digi-gift-form"
-      class="_digiGiftsForm"
-      data-product-id="{{ product.id }}"
-      data-product-description="{{ product.description }}"
-      data-product-price="{{ product.price }}"
-      data-variant-id="{{ product.variants.first.id }}"
-    >
-      <label for="recipient-name" class="_digiGiftsFormLabel">Recipient Name<span style="color: red">*</span></label>
-      <input type="text" id="digigifts-recipient-name" name="recipient_name" class="__digiGiftsInput" required>
-      <span id="name-error" class="__errorMessage"></span>
-
-      <label for="recipient-email" class="_digiGiftsFormLabel">Recipient Email<span style="color: red">*</span></label>
-      <input type="email" id="digigifts-recipient-email" name="recipient_email" class="__digiGiftsInput" required>
-      <span id="recipient-email-error" class="__errorMessage"></span>
-
-      <label for="message" class="_digiGiftsFormLabel">Gift Message<span style="color: red">*</span></label>
-      <textarea id="digigifts-message" name="message" rows="4" class="__digiGiftsInput" required></textarea>
-      <span id="message-error" class="__errorMessage"></span>
-
-      <button type="button" id="submit-digigifts-form" class="__digiGiftsSubmitButton">Submit</button>
-    </form>
-  </div>
+  {% endcomment %}
 
   <div class="__giftsButtonContainer">
     <button
@@ -152,6 +155,8 @@
       lGiftModal.style.display = 'block';
     });
   </script>
+  <script async src="{{ 'addItemToCart.js' | asset_url }}"></script>
+  <script async src="{{ 'updateCartAttributes.js' | asset_url }}"></script>
   {% comment %} <script async src="{{ 'addToCart.js' | asset_url }}"></script> {% endcomment %}
   {% comment %}
     <script async src="{{ 'checkForExistingGifts.js' | asset_url }}"></script>
