@@ -91,6 +91,10 @@
 {% if block.settings.display == 'order_buttons' %}
   {% assign addAsGiftText = 'Add to Gift' %}
   {% assign buyAsGiftText = 'Buy as Gift' %}
+  {% assign hasExistingGift = false %}
+  {% if cart.item_count > 0 and cart.attributes._digiGifts %}
+    {% assign hasExistingGift = true %}
+  {% endif %}
 
   {% comment %}
     <div id="_digiGifts_modal" class="_digiGiftsModal">
@@ -143,7 +147,7 @@
     <button
       id="lunar-add-gift-button"
       data-lunar-gift-button
-      data-lunar-has-gift="{% if cart.attributes._digiGifts %}true{% else %}false{% endif %}"
+      data-lunar-has-gift="{% if hasExistingGift %}true{% else %}false{% endif %}"
       data-add-to-gift-text="{{ addAsGiftText }}"
       data-buy-as-gift-text="{{ buyAsGiftText }}"
       data-product-id="{{ product.id }}"
@@ -152,7 +156,7 @@
       data-variant-id="{{ product.variants.first.id }}"
       class="shopify-payment-button__button __giftButton __giftButton--secondary"
     >
-      {% if cart.attributes._digiGifts %}
+      {% if hasExistingGift %}
         {{ addAsGiftText }}
       {% else %}
         {{ buyAsGiftText }}

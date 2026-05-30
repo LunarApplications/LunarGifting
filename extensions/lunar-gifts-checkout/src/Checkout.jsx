@@ -43,11 +43,11 @@ console.log('shopify',shopify)
       <s-stack gap="base">
        
         <s-text>
-          {shopify.i18n.translate("Please verify the gift recipient details.")}
+          {shopify.i18n.translate("verifyGiftRecipientDetails")}
         </s-text>
-          <s-text-field value={giftRecipient} />
-          <s-text-area value={giftMessage}/>
-          <s-text-area value={giftEmail}/>
+          <s-text-field label="Recipient Name" value={giftRecipient} />
+          <s-text-field label="Recipient Email" value={giftEmail}/>
+          <s-text-area label="Gift Message" value={giftMessage}/>
      
       </s-stack>
     </s-stack>

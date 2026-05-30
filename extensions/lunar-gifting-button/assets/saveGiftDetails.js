@@ -30,6 +30,7 @@ window.addProductToLunarGift = async (variantId) => {
 };
 
 initLunarCartOpenRefresh();
+initLunarGiftButtonState();
 
 async function addLunarGiftItemToCart(variantId) {
   const addItemToCart = await waitForLunarFunction("addItemToCart");
@@ -80,8 +81,24 @@ function setLunarGiftButtonState(hasGift) {
 
     if (hasGift && button.dataset.addToGiftText) {
       button.textContent = button.dataset.addToGiftText;
+    } else if (!hasGift && button.dataset.buyAsGiftText) {
+      button.textContent = button.dataset.buyAsGiftText;
     }
   });
+}
+
+async function initLunarGiftButtonState() {
+  try {
+    const root = window.Shopify?.routes?.root || "/";
+    const cart = await fetch(`${root}cart.js`).then((response) => response.json());
+    setLunarGiftButtonState(hasActiveLunarGift(cart));
+  } catch (error) {
+    console.warn("Lunar Gifting could not check the current gift state.", error);
+  }
+}
+
+function hasActiveLunarGift(cart) {
+  return Boolean(cart?.item_count > 0 && cart?.attributes?._digiGifts);
 }
 
 async function refreshLunarCartUi() {
