@@ -2,14 +2,23 @@
   .__giftsButtonContainer {
     display: flex;
     justify-content: space-evenly;
-    color: black;
     gap: 10px;
   }
 
   .__giftButton {
     height: 100%;
-    color: white;
-    background-color: black;
+    border: var(--buttons-border-width, 1px) solid rgba(var(--color-button, 18, 18, 18), var(--buttons-border-opacity, 1));
+    border-radius: var(--buttons-radius, 0);
+    box-shadow: var(--shadow-horizontal-offset, 0) var(--shadow-vertical-offset, 0) var(--shadow-blur-radius, 0)
+      rgba(var(--color-shadow, 18, 18, 18), var(--shadow-opacity, 0));
+    color: rgb(var(--color-button-text, 255, 255, 255));
+    background-color: rgba(var(--color-button, 18, 18, 18), 1);
+  }
+
+  .__giftButton--secondary {
+    border-color: rgba(var(--color-secondary-button-text, var(--color-foreground, 18, 18, 18)), var(--buttons-border-opacity, 1));
+    color: rgb(var(--color-secondary-button-text, var(--color-foreground, 18, 18, 18)));
+    background-color: rgba(var(--color-secondary-button, var(--color-background, 255, 255, 255)), 1);
   }
   ._digiGiftsModal {
     padding: 10px;
@@ -137,7 +146,7 @@
       data-product-description="{{ product.description }}"
       data-product-price="{{ product.price }}"
       data-variant-id="{{ product.variants.first.id }}"
-      class="shopify-payment-button__button __giftButton"
+      class="shopify-payment-button__button __giftButton __giftButton--secondary"
     >
       {% if cart.attributes._digiGifts %}
         {{ addAsGiftText }}
@@ -152,6 +161,10 @@
 
     const addAsGiftButton = document.getElementById('lunar-add-gift-button');
     addAsGiftButton.addEventListener('click', function () {
+      if (window.resetLunarGiftForm) {
+        window.resetLunarGiftForm();
+      }
+
       lGiftModal.style.display = 'block';
     });
   </script>
