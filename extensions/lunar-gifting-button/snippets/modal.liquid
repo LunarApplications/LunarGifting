@@ -317,7 +317,7 @@
       return;
     }
 
-    await saveGiftDetailsAndAddToCart(giftForm, saveGiftDetailsButton.dataset.variantId);
+    await window.saveGiftDetailsAndAddToCart(giftForm, saveGiftDetailsButton.dataset.variantId);
     resetGiftFormState();
     closeModal();
   });

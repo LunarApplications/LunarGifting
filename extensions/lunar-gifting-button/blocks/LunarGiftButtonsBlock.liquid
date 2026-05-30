@@ -89,8 +89,8 @@
 
 {% render 'modal' %}
 {% if block.settings.display == 'order_buttons' %}
-  {% assign addAsGiftText = 'Add to Gift++' %}
-  {% assign buyAsGiftText = 'Buy as Gift-' %}
+  {% assign addAsGiftText = 'Add to Gift' %}
+  {% assign buyAsGiftText = 'Buy as Gift' %}
 
   {% comment %}
     <div id="_digiGifts_modal" class="_digiGiftsModal">
@@ -142,6 +142,10 @@
 
     <button
       id="lunar-add-gift-button"
+      data-lunar-gift-button
+      data-lunar-has-gift="{% if cart.attributes._digiGifts %}true{% else %}false{% endif %}"
+      data-add-to-gift-text="{{ addAsGiftText }}"
+      data-buy-as-gift-text="{{ buyAsGiftText }}"
       data-product-id="{{ product.id }}"
       data-product-description="{{ product.description }}"
       data-product-price="{{ product.price }}"
@@ -160,7 +164,43 @@
     const lGiftModal = document.getElementById('lunar-gift-modal');
 
     const addAsGiftButton = document.getElementById('lunar-add-gift-button');
-    addAsGiftButton.addEventListener('click', function () {
+    function waitForLunarGiftAdd() {
+      if (window.addProductToLunarGift) {
+        return Promise.resolve(window.addProductToLunarGift);
+      }
+
+      return new Promise(function (resolve, reject) {
+        let attempts = 0;
+        const interval = window.setInterval(function () {
+          attempts += 1;
+
+          if (window.addProductToLunarGift) {
+            window.clearInterval(interval);
+            resolve(window.addProductToLunarGift);
+          }
+
+          if (attempts >= 50) {
+            window.clearInterval(interval);
+            reject(new Error('Lunar Gifting could not load the add-to-gift helper.'));
+          }
+        }, 100);
+      });
+    }
+
+    addAsGiftButton.addEventListener('click', async function () {
+      if (addAsGiftButton.dataset.lunarHasGift === 'true') {
+        addAsGiftButton.disabled = true;
+
+        try {
+          const addProductToLunarGift = await waitForLunarGiftAdd();
+          await addProductToLunarGift(addAsGiftButton.dataset.variantId);
+        } finally {
+          addAsGiftButton.disabled = false;
+        }
+
+        return;
+      }
+
       if (window.resetLunarGiftForm) {
         window.resetLunarGiftForm();
       }
